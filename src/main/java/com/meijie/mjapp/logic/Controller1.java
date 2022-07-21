@@ -1,4 +1,4 @@
-package logic;
+package com.meijie.mjapp.logic;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

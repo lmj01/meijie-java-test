@@ -1,9 +1,10 @@
-package pdf;
+package com.meijie.mjapp.pdf;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 
 import org.springframework.context.MessageSource;
 
@@ -70,13 +71,7 @@ public class PdfLevel0 {
 	}
 	
 	public String toUtf8(String srcStr) {
-		try {
-			return new String(srcStr.getBytes("UTF-8"));
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return srcStr;
-		}
+		return new String(srcStr.getBytes(StandardCharsets.UTF_8));
 	}
 	
 	protected void drawText(String str, float x, float y, int size, Color color) {

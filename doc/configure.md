@@ -14,7 +14,13 @@ spring data jpa
 spring boot dev tools
 spring security
 
-增加的依赖暂时没有逻辑，需要注释掉，否则会启动登录验证
+依赖spring data jpa
+会强制需要配置数据库，没有配置设置
+@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
+
+依赖spring security会自动产生登录框
+在org.springframework.boot.autoconfigure.security.reactive包中
+ReactiveUserDetailsServiceAutoConfiguration中自动配置了这个东西
 
 2022-07-20
 加入依赖com.itext
