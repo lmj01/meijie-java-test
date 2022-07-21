@@ -22,6 +22,8 @@ spring security
 在org.springframework.boot.autoconfigure.security.reactive包中
 ReactiveUserDetailsServiceAutoConfiguration中自动配置了这个东西
 
+调试完PDF的初始化
+
 2022-07-20
 加入依赖com.itext
 创建两个基本的类

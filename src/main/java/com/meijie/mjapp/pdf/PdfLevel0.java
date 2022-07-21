@@ -3,7 +3,6 @@ package com.meijie.mjapp.pdf;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 
 import org.springframework.context.MessageSource;
@@ -33,14 +32,14 @@ public class PdfLevel0 {
 	private Integer pageCountInteger;
 	
 	public static int fontSizeDefault = 10;
-	public static Color fontColorDefault = new DeviceRgb(0, 0, 0);
+	public static Color fontColorDefault = new DeviceRgb(255, 124, 123);
 	
 	protected PdfLevel0() {
 		this.pageCountInteger = 0;
 	}
 	
 	// 
-	public void init(String outputPath, OutputStream os) {
+	public void open(String outputPath, OutputStream os) {
 		this.a4 = new Rectangle(PageSize.A4);
 		if (os != null) {
 			this.writer = new PdfWriter(os);
@@ -54,6 +53,10 @@ public class PdfLevel0 {
 		}
 		this.pdfDoc = new PdfDocument(writer);
 		this.document = new Document(pdfDoc);
+	}
+	
+	public void close() {
+		this.document.close();
 	}
 	
 	public void newPage() {
@@ -73,7 +76,10 @@ public class PdfLevel0 {
 	public String toUtf8(String srcStr) {
 		return new String(srcStr.getBytes(StandardCharsets.UTF_8));
 	}
-	
+	protected float toy(float y) {
+		// 因为坐标的原点是左下角，从上往下绘制时，距离位置是要反转一下的
+    	return PageSize.A4.getTop() - y;
+    }
 	protected void drawText(String str, float x, float y, int size, Color color) {
 		if (str == null) str = "";
 		canvas
@@ -81,7 +87,7 @@ public class PdfLevel0 {
 		.beginText()
 		.setFontAndSize(font, size)
 		.setColor(color, true)
-		.moveTo(x, y)
+		.moveText(x, toy(y))
 		.showText(str)
 		.endText()
 		.restoreState();
