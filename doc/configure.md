@@ -1,5 +1,8 @@
 # 
 
+2022-07-22
+链接数据库
+
 2022-07-21
 https://spring.io/quickstart
 参考上面执行
@@ -23,6 +26,9 @@ spring security
 ReactiveUserDetailsServiceAutoConfiguration中自动配置了这个东西
 
 调试完PDF的初始化
+
+增加依赖
+Rest Repositories
 
 2022-07-20
 加入依赖com.itext
