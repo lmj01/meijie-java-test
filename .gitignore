@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### npm code ###
+src/main/resources/static/build/mjreact

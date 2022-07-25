@@ -1,0 +1,3 @@
+[submodule "src/main/webapp/mjreact"]
+	path = src/main/webapp/mjreact
+	url = https://github.com/lmj01/meijie-react.git
