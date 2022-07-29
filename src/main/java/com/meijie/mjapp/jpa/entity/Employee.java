@@ -5,6 +5,9 @@ import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Version;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity // @Entity is a JPA annotation that denotes the whole class for storage in a relational table.
 public class Employee {
@@ -12,6 +15,8 @@ public class Employee {
 	private String firstName;
 	private String lastName;
 	private String description;
+	
+	private @Version @JsonIgnore Long version;
 	
 	@SuppressWarnings("unused")
 	private Employee() {}
@@ -28,10 +33,11 @@ public class Employee {
 		return Objects.equals(id, oEmployee.id) &&
 				Objects.equals(firstName, oEmployee.firstName) &&
 				Objects.equals(lastName, oEmployee.lastName) &&
-				Objects.equals(description, oEmployee.description);
+				Objects.equals(description, oEmployee.description) &&
+				Objects.equals(version, oEmployee.version);
 	}
 	public int hasCode() {
-		return Objects.hash(id, firstName, lastName, description);
+		return Objects.hash(id, firstName, lastName, description, version);
 	}
 	@Override
 	public String toString() {
@@ -40,6 +46,7 @@ public class Employee {
 				", firstName='" + firstName + '\'' + 
 				", lastName='" + lastName + '\'' + 
 				", description='" + description + '\'' +
+				", version='" + description + '\'' +
 				'}';
 	}
 	public Long getId() {
@@ -65,6 +72,14 @@ public class Employee {
 	}
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public Long getVersion() {
+		return version;
+	}
+
+	public void setVersion(Long version) {
+		this.version = version;
 	}
 	
 }
