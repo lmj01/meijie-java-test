@@ -28,6 +28,7 @@ public class EventHandlerEmployee {
 
 	@HandleAfterCreate
 	public void newEmployee(Employee employee) {
+		System.out.println("new employee in eventhandle");
 		this.websocket.convertAndSend(
 				MESSAGE_PREFIX + "/newEmployee", getPath(employee));
 	}

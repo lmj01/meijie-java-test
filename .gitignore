@@ -35,3 +35,4 @@ build/
 ### npm code ###
 src/main/resources/static/build/mjreact
 *.log
+*.log.*
