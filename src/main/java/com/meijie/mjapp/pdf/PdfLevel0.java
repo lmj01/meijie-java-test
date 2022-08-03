@@ -4,8 +4,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Locale;
 
 import org.springframework.context.MessageSource;
+import org.springframework.lang.Nullable;
 
 import com.itextpdf.io.font.PdfEncodings;
 import com.itextpdf.kernel.colors.Color;
@@ -30,6 +32,8 @@ public class PdfLevel0 {
 	private PdfFont font;
 	private MessageSource messageSource; // 多语言版本
 	private Integer pageCountInteger;
+	private String languageString;
+	private float lineHeight;
 	
 	public static int fontSizeDefault = 10;
 	public static Color fontColorDefault = new DeviceRgb(255, 124, 123);
@@ -53,6 +57,7 @@ public class PdfLevel0 {
 		}
 		this.pdfDoc = new PdfDocument(writer);
 		this.document = new Document(pdfDoc);
+		setLineHeight(18);
 	}
 	
 	public void close() {
@@ -64,12 +69,18 @@ public class PdfLevel0 {
 		page = pdfDoc.addNewPage();
 		canvas = new PdfCanvas(page);
 	}
-	
+	/**
+	 * 在repository\com\itextpdf\font-asian\7.1.8的font-asian-7.1.8.jar文件中
+	 * com.itextpdf.io.font.cmap_info.txt文件中描述了一些问题
+	 * 在PDF中使用字体时有版权问题
+	 * @param path
+	 * @throws IOException
+	 */
 	protected void setFontFromPath(String path) throws IOException {
 		if (path == null) {
     		this.font = PdfFontFactory.createFont("STSongStd-Light", "UniGB-UCS2-H", false);
     	} else {
-    		this.font = PdfFontFactory.createFont(path, PdfEncodings.IDENTITY_H, true);	
+    		this.font = PdfFontFactory.createFont(path, PdfEncodings.IDENTITY_H, false);	
     	}
 	}
 	
@@ -82,16 +93,27 @@ public class PdfLevel0 {
     }
 	protected void drawText(String str, float x, float y, int size, Color color) {
 		if (str == null) str = "";
-		canvas
-		.saveState()
-		.beginText()
-		.setFontAndSize(font, size)
-		.setColor(color, true)
-		.moveText(x, toy(y))
-		.showText(str)
-		.endText()
-		.restoreState();
+		canvas.saveState()
+			.beginText()
+			.setFontAndSize(font, size)
+			.setColor(color, true)
+			.moveText(x, toy(y))
+			.showText(toUtf8(str))
+			.endText()
+			.restoreState();
 	}
+	// 语言包转换
+    public String t(String strCode, @Nullable Object[] args) {
+		if (languageString.startsWith("zh")) {
+			String aString = messageSource.getMessage(strCode, args, Locale.CHINESE);
+			System.out.println("print chinese : " + aString);
+			return aString;
+		} else {
+			String aString = messageSource.getMessage(strCode, args, Locale.ENGLISH);
+			System.out.println("print english : " + aString);
+			return aString;
+		}
+    }
 	
 	public PdfDocument getPdfDoc() {
 		return pdfDoc;
@@ -163,6 +185,22 @@ public class PdfLevel0 {
 
 	public void setPageCountInteger(Integer pageCountInteger) {
 		this.pageCountInteger = pageCountInteger;
+	}
+
+	public String getLanguageString() {
+		return languageString;
+	}
+
+	public void setLanguageString(String languageString) {
+		this.languageString = languageString;
+	}
+
+	public float getLineHeight() {
+		return lineHeight;
+	}
+
+	public void setLineHeight(float lineHeight) {
+		this.lineHeight = lineHeight;
 	}
 	
 }

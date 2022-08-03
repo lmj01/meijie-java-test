@@ -1,5 +1,9 @@
 # 
 
+2022-08-02
+配置messageresource，Java的i18n
+增加思源字体显示中文，直接在GitHub上下载
+
 2022-07-25
 配置一个前端
 git submodule add https://github.com/lmj01/meijie-react.git  src/main/webapp/mjreact
