@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.meijie.mjapp.logic.RequestModel;
-import com.meijie.mjapp.pdf.PdfLevel1;
+import com.meijie.mjapp.pdf.PdfDemoTest;
 
 @RestController
 public class PdfController {
@@ -27,7 +27,8 @@ public class PdfController {
 		response.setContentType("application/pdf");
 		response.setHeader("X-Frame-Options", "SAMEORIGIN");
 		Resource resourceGellix = resourceLoader.getResource("classpath:static/fonts/Gellix-Regular.ttf");
-		Resource resourceSourceHanSansCN = resourceLoader.getResource("classpath:static/fonts/SourceHanSansCN-Normal.otf");
+//		Resource resourceSourceHanSansCN = resourceLoader.getResource("classpath:static/fonts/SourceHanSansCN-Normal.otf");
+		Resource resourceSourceHanSansCN = resourceLoader.getResource("classpath:static/fonts/SourceHanSansCN-Regular.ttf");
 		Resource resourceSimhei = resourceLoader.getResource("classpath:static/fonts/simhei.ttf");
 		
 		String strLang = model.getLang();
@@ -43,11 +44,11 @@ public class PdfController {
 		System.out.println(resourceSimhei.getURI().getPath());
 		
 		OutputStream os = response.getOutputStream();
-		PdfLevel1 pdf1 = new PdfLevel1(messageSource, strLang);
+		PdfDemoTest pdf1 = new PdfDemoTest(messageSource, strLang);
 		if (strLang.startsWith("zh")) {
 			pdf1.draw(model, "", os, 
-//					resourceSourceHanSansCN.getURI().getPath()
-					resourceSimhei.getURI().getPath()
+					resourceSourceHanSansCN.getURI().getPath()
+//					resourceSimhei.getURI().getPath()
 			);
 		} else {
 			pdf1.draw(model, "", os, resourceGellix.getURI().getPath());
