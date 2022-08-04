@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <!-- <link rel="icon" type="image/svg+xml" href="/build/mjreact/vite.svg" /> -->
+        <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>portable pdf</title>
+        <style>
+        	body {
+        		margin: 0;
+        	}
+        	iframe {
+        		height:99vh;
+        	}
+        </style>
+    </head>
+    <body>
+        <iframe name="mjpdf" frameborder="0" width="100%" height="100%" src="/portpdf/web/viewer.html"></iframe>
+        <script type="module" >
+function getPdf() {
+	let pdf = null;
+	for (let i = 0; i < window.frames.length; i++) {
+		if (window.frames[i].name == "mjpdf") {
+			pdf = window.frames[i].PDFViewerApplication;
+			break;
+		}
+	}
+	return pdf;
+}
+function initial() {
+	fetch(`/pdf?lang=zh`)
+        .then(res=>res.arrayBuffer())
+        .then(buffer=>{
+			let pdf = getPdf();
+			console.log(222,buffer, pdf);
+			if (pdf) {
+				pdf.open(buffer);
+				pdf.appConfig.secondaryToolbar.cursorHandToolButton.click();
+			} 
+		});
+}
+initial();
+		</script>
+    </body>
+</html>

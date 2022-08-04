@@ -25,6 +25,7 @@ public class PdfController {
 	@GetMapping("/pdf")
 	public void pdf(HttpServletResponse response, HttpServletRequest request, RequestModel model) throws Exception {
 		response.setContentType("application/pdf");
+		response.setHeader("X-Frame-Options", "SAMEORIGIN");
 		Resource resourceGellix = resourceLoader.getResource("classpath:static/fonts/Gellix-Regular.ttf");
 		Resource resourceSourceHanSansCN = resourceLoader.getResource("classpath:static/fonts/SourceHanSansCN-Normal.otf");
 		Resource resourceSimhei = resourceLoader.getResource("classpath:static/fonts/simhei.ttf");

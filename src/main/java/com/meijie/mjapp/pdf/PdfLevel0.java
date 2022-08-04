@@ -80,7 +80,7 @@ public class PdfLevel0 {
 		if (path == null) {
     		this.font = PdfFontFactory.createFont("STSongStd-Light", "UniGB-UCS2-H", false);
     	} else {
-    		this.font = PdfFontFactory.createFont(path, PdfEncodings.IDENTITY_H, false);	
+    		this.font = PdfFontFactory.createFont(path, PdfEncodings.IDENTITY_H, true);	
     	}
 	}
 	
@@ -106,6 +106,7 @@ public class PdfLevel0 {
     public String t(String strCode, @Nullable Object[] args) {
 		if (languageString.startsWith("zh")) {
 			String aString = messageSource.getMessage(strCode, args, Locale.CHINESE);
+			System.err.println(String.format("sss--%s, %s", aString, strCode));
 			System.out.println("print chinese : " + aString);
 			return aString;
 		} else {

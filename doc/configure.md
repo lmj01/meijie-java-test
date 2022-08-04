@@ -1,5 +1,13 @@
 # 
 
+2022-08-04
+配置安全属性
+禁用自动配置安全后，出现不能启动的机制，是因为SecurityFilterAutoConfiguration问题
+
+2022-08-03
+配置messageresource时默认的字符编码不一样
+增加一个portable pdf
+
 2022-08-02
 配置messageresource，Java的i18n
 增加思源字体显示中文，直接在GitHub上下载
