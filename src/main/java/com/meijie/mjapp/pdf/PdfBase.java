@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
+import java.util.Observable;
 
 import org.springframework.context.MessageSource;
 import org.springframework.lang.Nullable;
@@ -21,7 +22,12 @@ import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.kernel.pdf.canvas.PdfCanvas;
 import com.itextpdf.layout.Document;
 
-public class PdfBase {
+/**
+ * 可被观察的对象
+ * @author meiji
+ *
+ */
+public class PdfBase extends Observable {
 	private PdfDocument pdfDoc;
 	private Document document;
 	private PdfWriter writer;
@@ -33,7 +39,7 @@ public class PdfBase {
 	private Integer pageCountInteger;
 	private String languageString;
 	private float lineHeight;
-	public static ThemeScheme theme;
+	public static ThemeScheme theme = new ThemeScheme();
 	
 	public static int fontSizeDefault = 10;
 	

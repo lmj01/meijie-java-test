@@ -12,11 +12,13 @@ import com.itextpdf.layout.element.Text;
 import com.itextpdf.layout.property.HorizontalAlignment;
 import com.itextpdf.layout.property.UnitValue;
 import com.meijie.mjapp.logic.RequestModel;
+import com.meijie.mjapp.logic.events.listenGenPdf;
 
 public class PdfDemoTest extends PdfBase {
 	public PdfDemoTest(MessageSource messageSource, String langString) {
 		setMessageSource(messageSource);
 		setLanguageString(langString);
+		this.addObserver(new listenGenPdf());
 	}
 	public void draw(RequestModel model, String outputPath, OutputStream os, String fontPath) throws Exception {
 		open(outputPath, os);
@@ -54,6 +56,9 @@ public class PdfDemoTest extends PdfBase {
 	    div.add(p2);
 	    this.getDocument().add(div);
 		
+	    setChanged();
+	    notifyObservers("PdfDemoTest");
+	    
 		close();
 	}
 }
