@@ -12,6 +12,7 @@ import org.springframework.lang.Nullable;
 
 import com.itextpdf.io.font.PdfEncodings;
 import com.itextpdf.kernel.colors.Color;
+import com.itextpdf.kernel.events.PdfDocumentEvent;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.kernel.geom.PageSize;
@@ -23,6 +24,7 @@ import com.itextpdf.kernel.pdf.canvas.PdfCanvas;
 import com.itextpdf.layout.Document;
 
 /**
+ * https://api.itextpdf.com/iText7/java/7.1.8/
  * 可被观察的对象
  * @author meiji
  *
@@ -39,6 +41,7 @@ public class PdfBase extends Observable {
 	private Integer pageCountInteger;
 	private String languageString;
 	private float lineHeight;
+	private PdfStartPage pdfStartPage = new PdfStartPage();
 	public static ThemeScheme theme = new ThemeScheme();
 	
 	public static int fontSizeDefault = 10;
@@ -61,11 +64,13 @@ public class PdfBase extends Observable {
 			}
 		}
 		this.pdfDoc = new PdfDocument(writer);
+		this.pdfDoc.addEventHandler(PdfDocumentEvent.START_PAGE, pdfStartPage);
 		this.document = new Document(pdfDoc);
 		setLineHeight(18);
 	}
 	
 	public void close() {
+		this.pdfDoc.removeEventHandler(PdfDocumentEvent.START_PAGE, pdfStartPage);
 		this.document.close();
 	}
 	
@@ -155,10 +160,6 @@ public class PdfBase extends Observable {
 
 	public PdfCanvas getCanvas() {
 		return canvas;
-	}
-
-	public void setCanvas(PdfCanvas canvas) {
-		this.canvas = canvas;
 	}
 
 	public Rectangle getA4() {

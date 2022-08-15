@@ -6,9 +6,11 @@ import org.springframework.context.MessageSource;
 
 import com.itextpdf.kernel.colors.Color;
 import com.itextpdf.layout.Style;
+import com.itextpdf.layout.element.AreaBreak;
 import com.itextpdf.layout.element.Div;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Text;
+import com.itextpdf.layout.property.AreaBreakType;
 import com.itextpdf.layout.property.HorizontalAlignment;
 import com.itextpdf.layout.property.UnitValue;
 import com.meijie.mjapp.logic.RequestModel;
@@ -38,7 +40,12 @@ public class PdfDemoTest extends PdfBase {
 		newPage();
 		x = y = 10;
 		this.drawText("hello world in page 2", x, y, fontSizeDefault, color1);
-	    Div div = new Div();
+	    
+		getDocument().add(new AreaBreak(AreaBreakType.NEXT_PAGE));
+		// 使用组件
+		Div div = new Div();
+		// 是否保持在同一个页面
+	    div.setKeepTogether(true);	    
 	    div.setWidth(UnitValue.createPercentValue(100));
 	    div.setHeight(UnitValue.createPercentValue(100));
 	    div.setHorizontalAlignment(HorizontalAlignment.CENTER);
@@ -50,7 +57,7 @@ public class PdfDemoTest extends PdfBase {
 	    Style large = new Style();
 	    large.setFontSize(22);
 	    large.setFontColor(color1);
-	    p1.add(new Text("尊敬的 ").addStyle(large));
+	    p1.add(new Text("hello test ").addStyle(large));
 	    Paragraph p2 = new Paragraph();
 	    div.add(p1);
 	    div.add(p2);
