@@ -6,14 +6,14 @@ import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBr
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 
-@Component
-@EnableWebSocketMessageBroker
+// @Component
+//@EnableWebSocketMessageBroker
 public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer {
 	static final String MESSAGE_PREFIX = "/topic";
 
 	@Override
 	public void registerStompEndpoints(StompEndpointRegistry registry) {
-		registry.addEndpoint("/payroll").withSockJS();
+		// registry.addEndpoint("/payroll").withSockJS();
 	}
 
 	@Override

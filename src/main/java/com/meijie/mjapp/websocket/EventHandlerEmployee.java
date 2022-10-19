@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
 
 import com.meijie.mjapp.jpa.entity.Employee;
 
-@Component
-@RepositoryEventHandler(Employee.class)
+//@Component
+//@RepositoryEventHandler(Employee.class)
 public class EventHandlerEmployee {
 	private static final String MESSAGE_PREFIX = WebSocketConfiguration.MESSAGE_PREFIX;
 
