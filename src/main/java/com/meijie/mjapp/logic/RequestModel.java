@@ -3,6 +3,7 @@ package com.meijie.mjapp.logic;
 public class RequestModel {
 	private String lang; // 语言
 	private String name; // 名称-特指一切名称
+	private String type; // 类型
 
 	RequestModel() {
 		lang = "";
@@ -23,5 +24,13 @@ public class RequestModel {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 }

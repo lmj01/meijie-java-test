@@ -23,7 +23,7 @@ public class PdfDemoTest extends PdfBase {
 		this.addObserver(new listenGenPdf());
 	}
 	public void draw(RequestModel model, String outputPath, OutputStream os, String fontPath) throws Exception {
-		open(outputPath, os);
+		open(outputPath, os, null);
 		Color color1 = theme.getFontDefaultColor();
 		// 第一页
 		newPage();

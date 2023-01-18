@@ -35,7 +35,7 @@ public class PdfBase extends Observable {
 	private PdfWriter writer;
 	private PdfPage page;
 	private PdfCanvas canvas;
-	private Rectangle a4;
+	private Rectangle pageSize;
 	private PdfFont font;
 	private MessageSource messageSource; // 多语言版本
 	private Integer pageCountInteger;
@@ -51,8 +51,18 @@ public class PdfBase extends Observable {
 	}
 	
 	// 
-	public void open(String outputPath, OutputStream os) {
-		this.a4 = new Rectangle(PageSize.A4);
+	public void open(String outputPath, OutputStream os, @Nullable String format) {
+		if (format == null) {
+			this.pageSize = new Rectangle(PageSize.A4);
+		} else {
+			String[] sizeString = format.split(",");			
+			if (sizeString.length == 2) {
+				System.out.println(String.format("page size : %s, %s", sizeString[0], sizeString[1]));
+				this.pageSize = new Rectangle(0, 0, Float.parseFloat(sizeString[0]), Float.parseFloat(sizeString[1]));
+			}
+			else this.pageSize = new Rectangle(PageSize.A4);
+		}
+		
 		if (os != null) {
 			this.writer = new PdfWriter(os);
 		} else {
@@ -63,9 +73,9 @@ public class PdfBase extends Observable {
 				e.printStackTrace();
 			}
 		}
-		this.pdfDoc = new PdfDocument(writer);
+		this.pdfDoc = new PdfDocument(this.writer);
 		this.pdfDoc.addEventHandler(PdfDocumentEvent.START_PAGE, pdfStartPage);
-		this.document = new Document(pdfDoc);
+		this.document = new Document(this.pdfDoc);
 		setLineHeight(18);
 	}
 	
@@ -73,11 +83,16 @@ public class PdfBase extends Observable {
 		this.pdfDoc.removeEventHandler(PdfDocumentEvent.START_PAGE, pdfStartPage);
 		this.document.close();
 	}
-	
+	public double mm2pt(double mm, String dpiString) {
+		// 打印设备多数为72
+		double dpi = 72;
+		if (dpiString != null) dpi = Double.parseDouble(dpiString);
+		return mm / 25.4f * dpi;
+	}
 	public void newPage() {
-		pageCountInteger++;
-		page = pdfDoc.addNewPage();
-		canvas = new PdfCanvas(page);
+		this.pageCountInteger++;
+		this.page = this.pdfDoc.addNewPage();
+		this.canvas = new PdfCanvas(this.page);
 	}
 	/**
 	 * 在repository\com\itextpdf\font-asian\7.1.8的font-asian-7.1.8.jar文件中
@@ -99,7 +114,7 @@ public class PdfBase extends Observable {
 	}
 	protected float toy(float y) {
 		// 因为坐标的原点是左下角，从上往下绘制时，距离位置是要反转一下的
-    	return PageSize.A4.getTop() - y;
+    	return this.pageSize.getTop() - y;
     }
 	protected void drawText(String str, float x, float y, int size, Color color) {
 		if (str == null) str = "";
@@ -107,7 +122,7 @@ public class PdfBase extends Observable {
 			.beginText()
 			.setFontAndSize(font, size)
 			.setColor(color, true)
-			.moveText(x, toy(y))
+			.moveText(x, y)
 			.showText(toUtf8(str))
 			.endText()
 			.restoreState();
@@ -116,12 +131,12 @@ public class PdfBase extends Observable {
     public String t(String strCode, @Nullable Object[] args) {
 		if (languageString.startsWith("zh")) {
 			String aString = messageSource.getMessage(strCode, args, Locale.CHINESE);
-			System.err.println(String.format("sss--%s, %s", aString, strCode));
-			System.out.println("print chinese : " + aString);
+//			System.err.println(String.format("sss--%s, %s", aString, strCode));
+//			System.out.println("print chinese : " + aString);
 			return aString;
 		} else {
 			String aString = messageSource.getMessage(strCode, args, Locale.ENGLISH);
-			System.out.println("print english : " + aString);
+//			System.out.println("print english : " + aString);
 			return aString;
 		}
     }
@@ -162,12 +177,12 @@ public class PdfBase extends Observable {
 		return canvas;
 	}
 
-	public Rectangle getA4() {
-		return a4;
+	public Rectangle getPageSize() {
+		return pageSize;
 	}
 
-	public void setA4(Rectangle a4) {
-		this.a4 = a4;
+	public void setPageSize(Rectangle a4) {
+		this.pageSize = a4;
 	}
 
 	public PdfFont getFont() {

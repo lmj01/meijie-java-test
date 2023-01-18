@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.meijie.mjapp.logic.RequestModel;
+import com.meijie.mjapp.pdf.PdfBagLabel;
 import com.meijie.mjapp.pdf.PdfDemoTest;
 
 @RestController
@@ -35,23 +36,28 @@ public class PdfController {
     	if (strLang.isEmpty()) {
     		// 如果没有指定，使用浏览器的可接收的语言
     		String lang = request.getHeader("Accept-Language");
-    		System.out.println(lang);
+    		System.out.println("Accept-Language -- "+lang);
         	String[] supportLang = lang.split(";")[0].split(",");
         	strLang = supportLang[0];
     	}
-		System.out.println(resourceSourceHanSansCN.getURI().getPath());
-		System.out.println(resourceGellix.getURI().getPath());
-		System.out.println(resourceSimhei.getURI().getPath());
-		
 		OutputStream os = response.getOutputStream();
-		PdfDemoTest pdf1 = new PdfDemoTest(messageSource, strLang);
-		if (strLang.startsWith("zh")) {
-			pdf1.draw(model, "", os, 
-					resourceSourceHanSansCN.getURI().getPath()
-//					resourceSimhei.getURI().getPath()
-			);
+		System.out.println("pdf type is -- " + model.getType());
+		if (model.getType().equals("bagLabel")) {
+			PdfBagLabel bagLabel = new PdfBagLabel(messageSource, "zh");
+			if (strLang.startsWith("sim")) {
+				bagLabel.draw(model, "", os, resourceGellix.getURI().getPath());
+			} else {
+				bagLabel.draw(model, "", os, resourceSimhei.getURI().getPath());
+			}
 		} else {
-			pdf1.draw(model, "", os, resourceGellix.getURI().getPath());
+			PdfDemoTest pdf1 = new PdfDemoTest(messageSource, strLang);
+			if (strLang.startsWith("zh")) {
+				pdf1.draw(model, "", os, resourceSourceHanSansCN.getURI().getPath());
+			} else if (strLang.startsWith("sim")) {
+				pdf1.draw(model, "", os, resourceSimhei.getURI().getPath());
+			} else {
+				pdf1.draw(model, "", os, resourceGellix.getURI().getPath());
+			}
 		}
 	}
 	
